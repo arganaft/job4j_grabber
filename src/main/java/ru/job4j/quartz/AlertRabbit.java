@@ -27,7 +27,7 @@ public class AlertRabbit {
         String url = config.getProperty("jdbc.url");
         String login = config.getProperty("jdbc.username");
         String password = config.getProperty("jdbc.password");
-        try(Connection connection = DriverManager.getConnection(url, login, password);
+        try (Connection connection = DriverManager.getConnection(url, login, password);
             Statement statement = connection.createStatement()) {
 
                 Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
