@@ -32,10 +32,39 @@ public class HabrCareerParse {
                 Element linkElement = titleElement.child(0);
                 String vacancyName = titleElement.text();
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
+                String description;
+                try {
+                    description = new HabrCareerParse().retrieveDescription(link);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 System.out.printf("%s %s date - %s%n", vacancyName, link, date);
+                System.out.println(description);
             });
             pageNumber++;
         }
 
+    }
+
+    private String retrieveDescription(String link) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        Connection connection = Jsoup.connect(link);
+        Document document = connection.get();
+        Element description = document.selectFirst(".vacancy-description__text");
+        stringBuilder = visitingAllChildren(stringBuilder, description);
+        return stringBuilder.toString();
+    }
+
+
+    private StringBuilder visitingAllChildren(StringBuilder stringBuilder, Element description) {
+        for (Element child : description.children()) {
+            if (child.children().size() == 0) {
+                stringBuilder.append(child.text());
+                stringBuilder.append(System.lineSeparator());
+            } else {
+                visitingAllChildren(stringBuilder, child);
+            }
+        }
+        return stringBuilder;
     }
 }
