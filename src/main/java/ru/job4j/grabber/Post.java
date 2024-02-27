@@ -5,10 +5,10 @@ import java.util.Objects;
 
 public class Post {
     private int id;
-    private String title;
-    private String link;
-    private String description;
-    private LocalDateTime created;
+    private final String title;
+    private final String link;
+    private final String description;
+    private final LocalDateTime created;
 
     public Post(String title, String link, String description, LocalDateTime created) {
         this.title = title;
@@ -19,6 +19,10 @@ public class Post {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -36,5 +40,16 @@ public class Post {
     @Override
     public int hashCode() {
         return Objects.hash(id, link);
+    }
+
+    @Override
+    public String toString() {
+        return "Post{"
+                + "id=" + id
+                + ", title='" + title + '\''
+                + ", link='" + link + '\''
+                + ", description='" + description + '\''
+                + ", created=" + created
+                + '}';
     }
 }

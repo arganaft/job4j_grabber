@@ -60,8 +60,6 @@ public class HabrCareerParse implements Parse {
       } catch (IOException e) {
           throw new RuntimeException(e);
       }
-      System.out.printf("%s %s date - %s%n", vacancyName, vacancyLink, date);
-      System.out.println(description);
       return new Post(vacancyName, vacancyLink, description, dateTimeParser.parse(date));
     }
 
