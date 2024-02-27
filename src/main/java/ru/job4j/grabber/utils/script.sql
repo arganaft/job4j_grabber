@@ -1,7 +1,7 @@
 CREATE TABLE post (
     id SERIAL PRIMARY KEY,
-    vacancy_name VARCHAR(255),
+    vacancy_name TEXT,
     vacancy_text TEXT,
-    link TEXT,
-    created DATE
+    link TEXT UNIQUE,
+    created timestamp
 );

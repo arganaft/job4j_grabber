@@ -33,4 +33,9 @@ public class MemStore implements  Store {
         }
         return findPost;
     }
+
+    @Override
+    public void close() throws Exception {
+
+    }
 }
