@@ -13,30 +13,6 @@ public class PsqlStore implements Store {
 
     private final Connection connection;
 
-    public static void main(String[] args) {
-        Properties config = new Properties();
-        try (InputStream input = new FileInputStream("src/main/resources/rabbit.properties")) {
-            config.load(input);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        Store store = new PsqlStore(config);
-        Post post1 = new Post("post1", "link1", "description1", LocalDateTime.now());
-        Post post2 = new Post("post2", "link2", "description2", LocalDateTime.now());
-
-        store.save(post1);
-        store.save(post2);
-        store.getAll().forEach(System.out::println);
-
-        System.out.println("второй запрос");
-
-        Post post2New = new Post("post2", "link2", "description2", LocalDateTime.now());
-        store.save(post2New);
-        store.getAll().forEach(System.out::println);
-
-
-    }
-
     public PsqlStore(Properties config) {
         try {
             Class.forName(config.getProperty("jdbc.driver"));
@@ -47,7 +23,6 @@ public class PsqlStore implements Store {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-
     }
 
     @Override
@@ -91,8 +66,6 @@ public class PsqlStore implements Store {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
         return posts;
     }
 

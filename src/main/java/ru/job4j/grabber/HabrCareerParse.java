@@ -18,11 +18,6 @@ public class HabrCareerParse implements Parse {
     private final String suffix = "&q=Java%20developer&type=all";
     private final DateTimeParser dateTimeParser;
 
-    public static void main(String[] args) throws IOException {
-        HabrCareerParse parser = new HabrCareerParse(new HabrCareerDateTimeParser());
-        parser.list("https://career.habr.com").forEach(System.out::println);
-    }
-
     public HabrCareerParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
     }
@@ -30,7 +25,6 @@ public class HabrCareerParse implements Parse {
     @Override
     public List<Post> list(String link) throws IOException {
         List<Post> posts = new LinkedList<>();
-
         int pageNumber = 1;
         Connection connection;
         Document document;
