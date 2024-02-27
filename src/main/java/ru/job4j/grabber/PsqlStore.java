@@ -1,10 +1,6 @@
 package ru.job4j.grabber;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -48,19 +44,11 @@ public class PsqlStore implements Store {
     @Override
     public List<Post> getAll() {
         List<Post> posts = new LinkedList<>();
-        Post post;
         try (PreparedStatement preparedStatement = connection.
                 prepareStatement("SELECT * FROM post")) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                      post = new  Post(
-                            resultSet.getString("vacancy_name"),
-                            resultSet.getString("link"),
-                            resultSet.getString("vacancy_text"),
-                            resultSet.getTimestamp("created").toLocalDateTime()
-                            );
-                      post.setId(resultSet.getInt("id"));
-                      posts.add(post);
+                      posts.add(createPost(resultSet));
                 }
             }
         } catch (SQLException e) {
@@ -77,13 +65,7 @@ public class PsqlStore implements Store {
             preparedStatement.setInt(1, id);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
-                    post = new Post(
-                            resultSet.getString("vacancy_name"),
-                            resultSet.getString("link"),
-                            resultSet.getString("vacancy_text"),
-                            resultSet.getTimestamp("created").toLocalDateTime()
-                    );
-                    post.setId(resultSet.getInt("id"));
+                    post = createPost(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -92,6 +74,17 @@ public class PsqlStore implements Store {
         if (post == null) {
             throw new NullPointerException(String.format("Post with id %d not found", id));
         }
+        return post;
+    }
+
+    private Post createPost(ResultSet resultSet) throws SQLException {
+        Post post = new  Post(
+                resultSet.getString("vacancy_name"),
+                resultSet.getString("link"),
+                resultSet.getString("vacancy_text"),
+                resultSet.getTimestamp("created").toLocalDateTime()
+        );
+        post.setId(resultSet.getInt("id"));
         return post;
     }
 
